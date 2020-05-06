@@ -70,11 +70,13 @@ def entity_counts(entities, dat):
     return pipe(dat, *fns)
 
 
-def entity_cooccurrence(entities, dat):
+def entity_cooccurrence(entities, dat, terms=None):
+
     fns = [filter(lambda x: x is not None),
            map(select_ents(entities)),
            map(flatten),
            map(uniq),
+           map(lambda l: l if terms is None else [x for x in l if x in terms]),
            map(lambda d: permutations(d, 2)),
            flatten,
            cooccurrence,
