@@ -58,6 +58,10 @@ def prep_tweets(tweets):
     :param tweets: iterator of tweets
     :returns: generator of entities
 
+    >>> raw_tweets = [{'id': 2345, 'entities': [], ...}
+    >>>               {'id': 9874, 'entities': [], ...}]
+    >>>
+    >>> tweets = prep_tweets(raw_tweets)
     """
 
     pipeline = [map(replace_retweets),
@@ -73,8 +77,11 @@ def entity_counts(entities, tweets):
     """Counts entity occurence in tweets
 
     :param entities: list of entity types to include
-    :param tweets: iterator of tweets
+    :param tweets: iterator of tweets from `prep_tweets`
     :returns: dictionary of entity values and counts
+
+    >>> tweets = prep_tweets(tweets)
+    >>> entity_counts(['urls', 'hashtags'], tweets)
 
     """
 
@@ -94,6 +101,17 @@ def entity_cooccurrence(entities, tweets, vocab):
     :param tweets: Iterator of tweets
     :param vocab: Dictionary mapping terms to index
     :returns: A sparse matrix with the occurrences
+
+    >>> # requires a vocab dictionary, which can be
+    >>> # created from the `entity_counts`.
+    >>>
+    >>> tweets = prep_tweets(tweets)
+    >>>
+    >>> counts = entity_counts(['urls', 'hashtags'], tweets)
+    >>> terms = {k for k, v in counts.items() if v > 5}
+    >>> vocab = {k:i for i,k in enumerate(terms)}
+    >>>
+    >>> entity_cooccurrence(['urls', 'hashtags'], tweets, vocab)
 
     """
 
