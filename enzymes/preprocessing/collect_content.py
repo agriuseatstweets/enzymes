@@ -49,10 +49,3 @@ def collect_retweeted_by(tweets):
                     lambda acc, t: acc + t['ag_retweeted_by'],
                     tweets,
                     [])
-
-
-
-
-# tweet = replace_retweets(tweet)
-# tweet = handle_truncated(tweet)
-# tweet = simplify_entities(tweet)
