@@ -28,8 +28,14 @@ def sanitize_entities(entities, tweet):
     if isinstance(entities[0], str):
         entities = [(e, '') for e in entities]
 
+    valid_entities = {'hashtags', 'urls', 'user_mentions', 'symbols', 'media'}
+
+    for ent, _ in entities:
+        if ent not in valid_entities:
+            raise Exception(f'The following entity is not valid: {ent}')
+
     indices = [(tok, u['indices']) for ent, tok in entities
-               for u in tweet['entities'][ent]]
+               for u in tweet['entities'].get(ent, [])]
 
     indices = sorted(indices, key=lambda x: x[1][0])
     text = remove_elements(tweet['text'], indices)

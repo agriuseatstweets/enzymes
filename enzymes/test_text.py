@@ -1,4 +1,5 @@
 import json
+import pytest
 from .text import sanitize_entities, remove_elements
 from .preprocessing.collect_content import handle_truncated
 
@@ -23,11 +24,23 @@ def test_sanitize_urls():
     tweet = sanitize_entities(['urls'], tweet)
     assert tweet['text'] == 'You love what’s traditional, reliable, and set in stone. Howev... More for Capricorn'
 
-
 def test_sanitize_urls_tokens():
     tweet = open_tweet('test/url_test.json')
     tweet = sanitize_entities([('urls', '[URL]')], tweet)
     assert tweet['text'] == 'You love what’s traditional, reliable, and set in stone. Howev... More for Capricorn [URL]'
+
+
+def test_sanitize_tokens_not_there():
+    tweet = open_tweet('test/url_test.json')
+    tweet = sanitize_entities(['media'], tweet)
+    assert tweet['text'] == 'You love what’s traditional, reliable, and set in stone. Howev... More for Capricorn https://t.co/WrLNxVo0lS'
+
+
+def test_raises_invalid_entities():
+    tweet = open_tweet('test/url_test.json')
+    with pytest.raises(Exception) as e:
+        sanitize_entities(['foo'], tweet)
+    assert 'foo' in str(e)
 
 def test_sanitize_urls_and_media():
     tweet = open_tweet('test/multi_url_test.json')
