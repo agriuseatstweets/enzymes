@@ -5,14 +5,15 @@ from functools import partial
 import numpy as np
 from scipy.sparse import dok_matrix
 
-from enzymes.preprocessing.collect_content import replace_retweets, \
+from .preprocessing.collect_content import replace_retweets, \
     handle_truncated, \
-    simplify_entities
+    simplify_entities, \
+    deduplicate
 
 
 select_ents = lambda keys: lambda d: [v for k, v in d.items() if k in keys]
 uniq = lambda x: list(set(x))
-deduplicate = partial(unique, key=lambda x: x['id'])
+
 
 def flatten(a):
     for x in a:
