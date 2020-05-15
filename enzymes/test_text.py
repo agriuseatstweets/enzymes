@@ -36,6 +36,12 @@ def test_sanitize_tokens_not_there():
     assert tweet['text'] == 'You love what’s traditional, reliable, and set in stone. Howev... More for Capricorn https://t.co/WrLNxVo0lS'
 
 
+def test_sanitize_tokens_works_with_new_tweet_format():
+    tweet = { 'entities': { 'media': None}, 'text': 'foo'}
+    tweet = sanitize_entities(['media'], tweet)
+    assert tweet['text'] == 'foo'
+
+
 def test_raises_invalid_entities():
     tweet = open_tweet('test/url_test.json')
     with pytest.raises(Exception) as e:

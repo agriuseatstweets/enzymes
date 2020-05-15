@@ -9,6 +9,14 @@ def remove_elements(string, indices):
         prev = end
     return out + string[prev:]
 
+
+def get_ent(ents, ent):
+    e = ents.get(ent)
+    if e is None:
+        return []
+    return e
+
+
 @curry
 def sanitize_entities(entities, tweet):
     """Removes entities from text of tweet, optionally adding token
@@ -34,12 +42,19 @@ def sanitize_entities(entities, tweet):
         if ent not in valid_entities:
             raise Exception(f'The following entity is not valid: {ent}')
 
+
     indices = [(tok, u['indices']) for ent, tok in entities
-               for u in tweet['entities'].get(ent, [])]
+               for u in get_ent(tweet['entities'], ent)]
 
     indices = sorted(indices, key=lambda x: x[1][0])
     text = remove_elements(tweet['text'], indices)
 
     # clean up whitespace from ends
     text = text.strip()
+    return {**tweet, 'text': text}
+
+
+def normalize_whitespace(tweet):
+    text = tweet['text']
+    text = ' '.join(text.split())
     return {**tweet, 'text': text}
