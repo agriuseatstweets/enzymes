@@ -1,4 +1,5 @@
 from .collect_content import *
+from .preprocess import handle_truncated
 
 
 quoted_tweet = {
@@ -106,14 +107,7 @@ ext_entities = {
 }
 
 
-def test_handle_truncated_ext():
-    t = handle_truncated(ext)
-    assert t['text'] == 'foobar'
-    assert len(t['entities']['hashtags']) == 2
 
-def test_handle_truncated_on_simple_tweet():
-    t = handle_truncated(tweet)
-    assert t['text'] == 'foo'
 
 def test_simplify_entities_on_extended_entities():
     t = simplify_entities(ext_entities)

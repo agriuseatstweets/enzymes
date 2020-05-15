@@ -1,7 +1,7 @@
 import json
 import pytest
 from .text import sanitize_entities, remove_elements
-from .preprocessing.collect_content import handle_truncated
+from .preprocessing.preprocess import handle_truncated
 
 def open_tweet(path):
     with open(path) as f:

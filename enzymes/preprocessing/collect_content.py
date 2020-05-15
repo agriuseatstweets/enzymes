@@ -1,9 +1,6 @@
 from copy import copy
 from toolz import get_in, assoc_in, reduceby
 
-def _set_from(tweet, dest, from_):
-    return assoc_in(tweet, dest, get_in(from_, tweet))
-
 def _extract_entity(tweet, from_, get_out, root_from, root_to='entities'):
     li = get_in([root_from, from_], tweet)
     if not li:
@@ -28,13 +25,6 @@ def simplify_entities(tweet):
     for a, b, r in li:
         tweet = _extract_entity(tweet, a, b, r)
 
-    return tweet
-
-def handle_truncated(tweet):
-    truncated = get_in(['truncated'], tweet)
-    if truncated:
-        tweet = _set_from(tweet, ['entities'], ['extended_tweet', 'entities'])
-        tweet = _set_from(tweet, ['text'], ['extended_tweet', 'full_text'])
     return tweet
 
 def replace_retweets(tweet):

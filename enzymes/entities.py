@@ -10,6 +10,8 @@ from .preprocessing.collect_content import replace_retweets, \
     simplify_entities, \
     deduplicate
 
+from .preprocessing.preprocess import handle_truncated
+
 
 select_ents = lambda keys: lambda d: [v for k, v in d.items() if k in keys]
 uniq = lambda x: list(set(x))
